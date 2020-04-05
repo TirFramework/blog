@@ -1,0 +1,29 @@
+{
+    "name": "tir/blog",
+    "description": "The Blog system for Tir framework",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Tirdad Abbasi",
+            "email": "abbasi.tirdad@gmail.com"
+        }
+    ],
+    "require": {
+        "tir/crud": "dev-master",
+        "tir/user": "dev-master"
+    },
+
+    "autoload": {
+        "psr-4": {
+            "Tir\\Blog\\": "src/"
+        }
+    },
+
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Tir\\Blog\\BlogServiceProvider"
+            ]
+        }
+    }
+}
