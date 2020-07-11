@@ -14,7 +14,7 @@ class CreatePostCategoriesTable extends Migration
     {
         DB::statement('SET FOREIGN_KEY_CHECKS = 0');
 
-        Schema::create('categories', function (Blueprint $table) {
+        Schema::create('post_categories', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('user_id');
             $table->string('name');
