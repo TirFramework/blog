@@ -2,11 +2,10 @@
 
 namespace Tir\Profile\Http\Controllers;
 
+use Tir\Blog\Entities\Post;
+use Tir\Crud\Controllers\CrudController;
 
-use Tir\Blog\Models\Post;
-use Tir\Crud\Http\Controllers\CrudController;
-
-class AdminProfileController extends CrudController
+class AdminPostController extends CrudController
 {
     protected $model = Post::Class;
 
