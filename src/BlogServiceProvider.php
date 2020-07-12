@@ -31,6 +31,6 @@ class BlogServiceProvider extends ServiceProvider
 
 //        $this->loadViewsFrom(__DIR__ . '/Resources/Views', 'post');
 
-//        $this->loadTranslationsFrom(__DIR__ . '/Resources/Lang/', 'post');
+        $this->loadTranslationsFrom(__DIR__ . '/Resources/Lang/', 'post');
     }
 }

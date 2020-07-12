@@ -6,7 +6,7 @@ use Astrotomic\Translatable\Translatable;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Tir\Crud\Support\Eloquent\CrudModel;
 
-class Post extends CrudModel
+class PostCategory extends CrudModel
 {
 
     use Translatable, Sluggable;
@@ -17,21 +17,23 @@ class Post extends CrudModel
      *
      * @var string
      */
-    public static $routeName = 'post';
+    public static $routeName = 'postCategory';
+
+    public $table = 'post_category';
 
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = ['title', 'content', 'slug', 'status'];
+    protected $fillable = ['name', 'slug', 'parent_id', 'images', 'position', 'status'];
 
     /**
      * The attributes that are translatable.
      *
      * @var array
      */
-    public $translatedAttributes = ['title', 'body'];
+    public $translatedAttributes = ['title', 'summery', 'description', 'meta_description'];
 
 
     /**
@@ -59,10 +61,9 @@ class Post extends CrudModel
     public function getValidation()
     {
         return [
-            'title'   => 'required',
-            'slug'    => 'required',
-            'status'  => 'required',
-            'content' => 'required'
+            'name'   => 'required',
+            'slug'   => 'required',
+            'status' => 'required',
         ];
     }
 
@@ -81,7 +82,7 @@ class Post extends CrudModel
                 'visible' => 'ce',
                 'tabs'    => [
                     [
-                        'name'    => 'menu_information',
+                        'name'    => 'postCategory_information',
                         'type'    => 'tab',
                         'visible' => 'ce',
                         'fields'  => [
@@ -91,9 +92,9 @@ class Post extends CrudModel
                                 'visible' => 'io',
                             ],
                             [
-                                'name'    => 'title',
+                                'name'    => 'name',
                                 'type'    => 'text',
-                                'visible' => 'ice',
+                                'visible' => 'ce',
                             ],
                             [
                                 'name'    => 'slug',
@@ -101,8 +102,24 @@ class Post extends CrudModel
                                 'visible' => 'ce',
                             ],
                             [
-                                'name'    => 'image',
+                                'name'     => 'parent_id',
+                                'type'     => 'relation',
+                                'relation' => ['parent','name'],
+                                'visible'  => 'ce',
+                            ],
+                            [
+                                'name'    => 'images',
                                 'type'    => 'image',
+                                'visible' => 'ce',
+                            ],
+                            [
+                                'name'    => 'summary',
+                                'type'    => 'textarea',
+                                'visible' => 'ce',
+                            ],
+                            [
+                                'name'    => 'description',
+                                'type'    => 'textEditor',
                                 'visible' => 'ce',
                             ],
                             [
@@ -116,19 +133,20 @@ class Post extends CrudModel
                                 'visible' => 'ce',
                             ],
                             [
-                                'name'    => 'created_at',
-                                'type'    => 'text',
-                                'visible' => 'i',
-                            ],
-                            [
                                 'name'    => 'status',
                                 'type'    => 'select',
                                 'data'    => ['draft'       => trans('post::panel.draft'),
                                               'published'   => trans('post::panel.published'),
                                               'unpublished' => trans('post::panel.unpublished')
                                 ],
-                                'visible' => 'icef',
+                                'visible' => 'cef',
                             ],
+                            [
+                                'name' => 'meta',
+                                'type' => 'metaDescription',
+                                'visible' => 'ce'
+
+                            ]
 
 
                         ]
@@ -139,28 +157,6 @@ class Post extends CrudModel
     }
 
     //Additional methods //////////////////////////////////////////////////////////////////////////////////////////////
-
-    public function getCreatedAtAttribute($date)
-    {
-        return jdate($date)->ago();
-    }
-
-    public static function urlForPage($id)
-    {
-        return static::select('slug')->firstOrNew(['id' => $id])->url();
-    }
-
-    public function url()
-    {
-        if (is_null($this->slug)) {
-            return '#';
-        }
-
-        return '/page/' . $this->slug;
-
-        //TODO:localized url check
-        //return localized_url(Crud::locale(), $this->slug);
-    }
 
 
     //Relations methods ///////////////////////////////////////////////////////////////////////////////////////////////

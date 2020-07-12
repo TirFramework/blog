@@ -21,7 +21,7 @@ class CreatePostCategoriesTable extends Migration
             $table->string('slug')->unique();
             $table->integer('parent_id')->nullable();
             $table->text('images')->nullable();
-            $table->integer('ordered')->nullable();
+            $table->integer('position')->nullable();
             $table->enum('status',['published','unpublished'])->default('published');
             $table->softDeletes();
         });
@@ -33,7 +33,7 @@ class CreatePostCategoriesTable extends Migration
             $table->string('locale');
             $table->text('summary')->nullable();
             $table->text('description')->nullable();
-            $table->text('meta_description')->nullable();
+            $table->text('meta')->nullable();
 
             $table->unique(['post_category_id', 'locale']);
             $table->foreign('post_category_id')->references('id')->on('post_categories')->onDelete('cascade');
