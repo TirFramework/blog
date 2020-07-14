@@ -18,9 +18,8 @@ class CreatePostsTable extends Migration
             $table->bigIncrements('id');
             $table->bigInteger('user_id');
             $table->integer('author_id');
-            $table->string('title');
             $table->string('slug')->unique();
-            $table->integer('ordered')->nullable();
+            $table->integer('position')->nullable();
             $table->enum('status', ['published', 'unpublished','draft'])->default('draft');
             $table->boolean('top')->nullable();
             $table->integer('views')->default(0);
@@ -33,6 +32,7 @@ class CreatePostsTable extends Migration
 
             $table->bigIncrements('id');
             $table->bigInteger('post_id')->unsigned();
+            $table->string('title');
             $table->string('locale');
             $table->text('images')->nullable();
             $table->text('summary')->nullable();

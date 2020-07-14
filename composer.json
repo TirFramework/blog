@@ -9,8 +9,7 @@
         }
     ],
     "require": {
-        "tir/crud": "dev-master",
-        "tir/user": "dev-master"
+        "tir/crud": "dev-master"
     },
 
     "autoload": {

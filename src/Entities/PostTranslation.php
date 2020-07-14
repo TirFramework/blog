@@ -1,6 +1,6 @@
 <?php
 
-namespace Tir\Post\Entities;
+namespace Tir\Blog\Entities;
 
 use Tir\Crud\Support\Eloquent\TranslationModel;
 
@@ -12,5 +12,5 @@ class PostTranslation extends TranslationModel
      *
      * @var array
      */
-    protected $fillable = ['title','body'];
+    protected $fillable = ['title','summary','content','images'];
 }

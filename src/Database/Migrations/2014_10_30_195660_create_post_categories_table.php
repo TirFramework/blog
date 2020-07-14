@@ -17,7 +17,6 @@ class CreatePostCategoriesTable extends Migration
         Schema::create('post_categories', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('user_id');
-            $table->string('name');
             $table->string('slug')->unique();
             $table->integer('parent_id')->nullable();
             $table->text('images')->nullable();
@@ -30,6 +29,7 @@ class CreatePostCategoriesTable extends Migration
 
             $table->bigIncrements('id');
             $table->bigInteger('post_category_id')->unsigned();
+            $table->string('name');
             $table->string('locale');
             $table->text('summary')->nullable();
             $table->text('description')->nullable();
@@ -40,7 +40,7 @@ class CreatePostCategoriesTable extends Migration
         });
 
 
-        Schema::create('post_category', function (Blueprint $table) {
+        Schema::create('post_post_category', function (Blueprint $table) {
 
             $table->bigIncrements('id');
             $table->bigInteger('post_category_id')->unsigned();

@@ -2,9 +2,9 @@
 
 namespace Tir\Blog\Entities;
 
-use Astrotomic\Translatable\Translatable;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Tir\Crud\Support\Eloquent\CrudModel;
+use Tir\Crud\Support\Eloquent\Translatable;
 
 class PostCategory extends CrudModel
 {
@@ -19,21 +19,21 @@ class PostCategory extends CrudModel
      */
     public static $routeName = 'postCategory';
 
-    public $table = 'post_category';
+    public $table = 'post_categories';
 
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = ['name', 'slug', 'parent_id', 'images', 'position', 'status'];
+    protected $fillable = ['slug', 'parent_id', 'images', 'position', 'status','user_id'];
 
     /**
      * The attributes that are translatable.
      *
      * @var array
      */
-    public $translatedAttributes = ['title', 'summery', 'description', 'meta_description'];
+    public $translatedAttributes = ['name', 'summary', 'description', 'meta_description'];
 
 
     /**
@@ -42,6 +42,8 @@ class PostCategory extends CrudModel
      * @var array
      */
     protected $with = ['translations'];
+
+    public $timestamps = false;
 
 
     public function sluggable()
@@ -94,7 +96,7 @@ class PostCategory extends CrudModel
                             [
                                 'name'    => 'name',
                                 'type'    => 'text',
-                                'visible' => 'ce',
+                                'visible' => 'ice',
                             ],
                             [
                                 'name'    => 'slug',
@@ -123,16 +125,6 @@ class PostCategory extends CrudModel
                                 'visible' => 'ce',
                             ],
                             [
-                                'name'    => 'intro',
-                                'type'    => 'textarea',
-                                'visible' => 'ce',
-                            ],
-                            [
-                                'name'    => 'body',
-                                'type'    => 'textEditor',
-                                'visible' => 'ce',
-                            ],
-                            [
                                 'name'    => 'status',
                                 'type'    => 'select',
                                 'data'    => ['draft'       => trans('post::panel.draft'),
@@ -157,6 +149,17 @@ class PostCategory extends CrudModel
     }
 
     //Additional methods //////////////////////////////////////////////////////////////////////////////////////////////
+    public function parent()
+    {
+        return $this->belongsTo(PostCategory::class, 'parent_id');
+    }
+
+    public function posts()
+    {
+        return PostCategoryTranslation::class;
+        return $this->hasMany(Post::class);
+    }
+
 
 
     //Relations methods ///////////////////////////////////////////////////////////////////////////////////////////////

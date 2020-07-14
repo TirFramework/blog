@@ -2,9 +2,12 @@
 
 namespace Tir\Blog\Entities;
 
-use Astrotomic\Translatable\Translatable;
 use Cviebrock\EloquentSluggable\Sluggable;
+use Illuminate\Support\Facades\Auth;
 use Tir\Crud\Support\Eloquent\CrudModel;
+use Tir\Crud\Support\Eloquent\Translatable;
+use Tir\Store\Category\Entities\Category;
+use Tir\User\Entities\User;
 
 class Post extends CrudModel
 {
@@ -24,14 +27,14 @@ class Post extends CrudModel
      *
      * @var array
      */
-    protected $fillable = ['title', 'content', 'slug', 'status'];
+    protected $fillable = ['slug', 'status','user_id', 'author_id'];
 
     /**
      * The attributes that are translatable.
      *
      * @var array
      */
-    public $translatedAttributes = ['title', 'body'];
+    public $translatedAttributes = ['title', 'content','summary','images'];
 
 
     /**
@@ -62,7 +65,6 @@ class Post extends CrudModel
             'title'   => 'required',
             'slug'    => 'required',
             'status'  => 'required',
-            'content' => 'required'
         ];
     }
 
@@ -96,22 +98,34 @@ class Post extends CrudModel
                                 'visible' => 'ice',
                             ],
                             [
+                                'name'    => 'author_id',
+                                'type'    => 'relation',
+                                'relation' => ['author', 'last_name'],
+                                'visible' => 'ice',
+                            ],
+                            [
                                 'name'    => 'slug',
                                 'type'    => 'text',
                                 'visible' => 'ce',
                             ],
                             [
-                                'name'    => 'image',
+                                'name' => 'categories',
+                                'type' => 'relationM',
+                                'relation' => ['categories', 'name'],
+                                'visible' => 'ice'
+                            ],
+                            [
+                                'name'    => 'images',
                                 'type'    => 'image',
                                 'visible' => 'ce',
                             ],
                             [
-                                'name'    => 'intro',
+                                'name'    => 'summary',
                                 'type'    => 'textarea',
                                 'visible' => 'ce',
                             ],
                             [
-                                'name'    => 'body',
+                                'name'    => 'content',
                                 'type'    => 'textEditor',
                                 'visible' => 'ce',
                             ],
@@ -140,30 +154,24 @@ class Post extends CrudModel
 
     //Additional methods //////////////////////////////////////////////////////////////////////////////////////////////
 
-    public function getCreatedAtAttribute($date)
+    public function setAuthorIdAttribute($value)
     {
-        return jdate($date)->ago();
-    }
-
-    public static function urlForPage($id)
-    {
-        return static::select('slug')->firstOrNew(['id' => $id])->url();
-    }
-
-    public function url()
-    {
-        if (is_null($this->slug)) {
-            return '#';
+        if($value == null){
+        return $this->attributes['author_id'] = Auth::User()->id;
+        }else{
+            return $value;
         }
-
-        return '/page/' . $this->slug;
-
-        //TODO:localized url check
-        //return localized_url(Crud::locale(), $this->slug);
     }
 
 
     //Relations methods ///////////////////////////////////////////////////////////////////////////////////////////////
 
+    public function categories()
+    {
+        return $this->belongsToMany(PostCategory::class);
+    }
 
+    public function author(){
+        return $this->belongsTo(User::class, 'author_id');
+    }
 }
