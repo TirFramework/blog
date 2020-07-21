@@ -32,5 +32,22 @@ class BlogServiceProvider extends ServiceProvider
 //        $this->loadViewsFrom(__DIR__ . '/Resources/Views', 'post');
 
         $this->loadTranslationsFrom(__DIR__ . '/Resources/Lang/', 'post');
+        $this->loadTranslationsFrom(__DIR__ . '/Resources/Lang/', 'postCategory');
+
+        //Add menu to admin panel
+        $this->adminMenu();
+
+    }
+
+
+
+    private function adminMenu()
+    {
+        $menu = resolve('AdminMenu');
+        $menu->item('content')->title('post::panel.content')->link('#')->add();
+        $menu->item('content.blog')->title('post::panel.blog')->link('#')->add();
+        $menu->item('content.blog.category')->title('postCategory::panel.postCategories')->route('postCategory.index')->add();
+        $menu->item('content.blog.post')->title('post::panel.posts')->route('post.index')->add();
+
     }
 }

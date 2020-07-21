@@ -21,7 +21,7 @@ class CreatePostCategoriesTable extends Migration
             $table->integer('parent_id')->nullable();
             $table->text('images')->nullable();
             $table->integer('position')->nullable();
-            $table->enum('status',['published','unpublished'])->default('published');
+            $table->enum('status',['draft','published','unpublished'])->default('published');
             $table->softDeletes();
         });
 
@@ -66,7 +66,7 @@ class CreatePostCategoriesTable extends Migration
 
         Schema::dropIfExists('post_categories');
         Schema::dropIfExists('post_category_translations');
-        Schema::dropIfExists('post_category');
+        Schema::dropIfExists('post_post_category');
 
         DB::statement('SET FOREIGN_KEY_CHECKS = 1');
 

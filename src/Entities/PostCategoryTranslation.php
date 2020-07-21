@@ -12,8 +12,12 @@ class PostCategoryTranslation extends TranslationModel
      *
      * @var array
      */
-    protected $fillable = ['name','summary','description'];
+    protected $fillable = ['name','summary','description','meta'];
 
     public $table = 'post_category_translations';
+
+    protected $casts = [
+        'meta' => 'array'
+    ];
 
 }

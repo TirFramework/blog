@@ -26,14 +26,14 @@ class PostCategory extends CrudModel
      *
      * @var array
      */
-    protected $fillable = ['slug', 'parent_id', 'images', 'position', 'status','user_id'];
+    protected $fillable = ['slug', 'parent_id', 'images', 'position', 'status', 'user_id'];
 
     /**
      * The attributes that are translatable.
      *
      * @var array
      */
-    public $translatedAttributes = ['name', 'summary', 'description', 'meta_description'];
+    public $translatedAttributes = ['name', 'summary', 'description', 'meta'];
 
 
     /**
@@ -54,6 +54,10 @@ class PostCategory extends CrudModel
             ]
         ];
     }
+
+    protected $casts = [
+        'images' => 'array'
+    ];
 
     /**
      * This function return array for validation
@@ -106,13 +110,8 @@ class PostCategory extends CrudModel
                             [
                                 'name'     => 'parent_id',
                                 'type'     => 'relation',
-                                'relation' => ['parent','name'],
+                                'relation' => ['parent', 'name'],
                                 'visible'  => 'ce',
-                            ],
-                            [
-                                'name'    => 'images',
-                                'type'    => 'image',
-                                'visible' => 'ce',
                             ],
                             [
                                 'name'    => 'summary',
@@ -132,14 +131,46 @@ class PostCategory extends CrudModel
                                               'unpublished' => trans('post::panel.unpublished')
                                 ],
                                 'visible' => 'cef',
+                            ]
+                        ]
+                    ],
+                    [
+                        'name'    => 'images',
+                        'type'    => 'tab',
+                        'visible' => 'ce',
+                        'fields'  => [
+                            [
+                                'name'    => 'images[header]',
+                                'display' => 'header_image',
+                                'type'    => 'image',
+                                'visible' => 'ce',
                             ],
                             [
-                                'name' => 'meta',
-                                'type' => 'metaDescription',
-                                'visible' => 'ce'
-
+                                'name'    => 'images[main]',
+                                'display' => 'main_image',
+                                'type'    => 'image',
+                                'visible' => 'ce',
                             ]
 
+                        ]
+                    ],
+                    [
+                        'name'    => 'meta',
+                        'type'    => 'tab',
+                        'visible' => 'ce',
+                        'fields'  => [
+                            [
+                                'name'    => 'meta[keyword]',
+                                'display' => 'meta_keywords',
+                                'type'    => 'text',
+                                'visible' => 'ce',
+                            ],
+                            [
+                                'name'    => 'meta[description]',
+                                'display' => 'meta_description',
+                                'type'    => 'textarea',
+                                'visible' => 'ce',
+                            ]
 
                         ]
                     ]
@@ -159,7 +190,6 @@ class PostCategory extends CrudModel
         return PostCategoryTranslation::class;
         return $this->hasMany(Post::class);
     }
-
 
 
     //Relations methods ///////////////////////////////////////////////////////////////////////////////////////////////

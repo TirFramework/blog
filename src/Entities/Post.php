@@ -83,7 +83,7 @@ class Post extends CrudModel
                 'visible' => 'ce',
                 'tabs'    => [
                     [
-                        'name'    => 'menu_information',
+                        'name'    => 'post_information',
                         'type'    => 'tab',
                         'visible' => 'ce',
                         'fields'  => [
