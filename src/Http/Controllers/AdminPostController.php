@@ -11,4 +11,13 @@ class AdminPostController extends CrudController
 {
     protected $model = Post::Class;
 
+    public function storeRequestManipulation(Request $request)
+    {
+        if(empty($request->author_id)){
+            $request->merge(['author_id' => Auth::id()]);
+        }
+
+        return $request;
+    }
+
 }

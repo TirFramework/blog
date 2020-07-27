@@ -154,15 +154,6 @@ class Post extends CrudModel
 
     //Additional methods //////////////////////////////////////////////////////////////////////////////////////////////
 
-    public function setAuthorIdAttribute($value)
-    {
-        if($value == null){
-        return $this->attributes['author_id'] = Auth::User()->id;
-        }else{
-            return $value;
-        }
-    }
-
 
     //Relations methods ///////////////////////////////////////////////////////////////////////////////////////////////
 
