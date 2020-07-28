@@ -152,6 +152,15 @@ class Post extends CrudModel
         ];
     }
 
+    //
+
+    public function getPublishedAtAttribute($value)
+    {
+        if( config('app.locale') =='fa' ){
+            return jdate($value)->format('%H:%M %A %d %B %Y');
+        }
+    }
+
     //Additional methods //////////////////////////////////////////////////////////////////////////////////////////////
 
 

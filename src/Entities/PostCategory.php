@@ -187,8 +187,8 @@ class PostCategory extends CrudModel
 
     public function posts()
     {
-        return PostCategoryTranslation::class;
-        return $this->hasMany(Post::class);
+        // return PostCategoryTranslation::class;
+        return $this->belongsToMany(Post::class);
     }
 
 
