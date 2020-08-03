@@ -40,4 +40,16 @@ return [
     'is_active'         => 'فعال',
 
 
+
+    'meta_keywords'         => 'کلمه کلیدی',
+
+    'intro_image'         => 'عکس معرف',
+    'main_image'         => 'عکس اصلی',
+
+    
+    'images[intro]'         => 'عکس معرف',
+    'images[main]'         => 'عکس اصلی',
+    
+    'meta'         => 'متا',
+
 ];

@@ -2,8 +2,6 @@
 
 namespace Tir\Blog;
 
-use Tir\Blog\Models\Post;
-use Tir\Blog\Models\User;
 use Illuminate\Support\ServiceProvider;
 
 class BlogServiceProvider extends ServiceProvider
@@ -25,6 +23,10 @@ class BlogServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        if (! config('app.installed')) {
+            return;
+        }
+
         $this->loadRoutesFrom(__DIR__ . '/Routes/admin.php');
         $this->loadRoutesFrom(__DIR__ . '/Routes/public.php');
 

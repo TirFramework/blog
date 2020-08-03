@@ -49,10 +49,14 @@ class PublicPostController extends Controller
 
     }
 
+
     public function category($slug)
     {
         
-        $PostCategory = PostCategory::where( 'slug', $slug )->with('posts')->firstOrFail();
+        
+        $category = PostCategory::where( 'slug', $slug )->firstOrFail();
+
+        $posts = $category->posts()->with('author')->with('categories')->paginate(15);
 
 
         $lastposts = Post::latest()->limit(5)->get();
@@ -60,10 +64,9 @@ class PublicPostController extends Controller
 
         $categories = PostCategory::limit(10)/*->with('children')*/->withCount('posts')->get();
 
-        // return $PostCategory;
+        // return $posts;
 
-        return view(config('crud.front-template').'::public.blog.category', compact('PostCategory','lastposts','categories'));
-
+        return view(config('crud.front-template').'::public.blog.category', compact('posts','lastposts','categories','category'));
 
     }
 

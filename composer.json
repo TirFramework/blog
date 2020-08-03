@@ -9,7 +9,8 @@
         }
     ],
     "require": {
-        "tir/crud": "dev-master"
+        "tir/crud": "*",
+        "cviebrock/eloquent-sluggable": "^6.0"
     },
 
     "autoload": {

@@ -115,11 +115,6 @@ class Post extends CrudModel
                                 'visible' => 'ice'
                             ],
                             [
-                                'name'    => 'images',
-                                'type'    => 'image',
-                                'visible' => 'ce',
-                            ],
-                            [
                                 'name'    => 'summary',
                                 'type'    => 'textarea',
                                 'visible' => 'ce',
@@ -145,6 +140,45 @@ class Post extends CrudModel
                             ],
 
 
+                        ]
+                    ],
+                    [
+                        'name'    => 'images',
+                        'type'    => 'tab',
+                        'visible' => 'ce',
+                        'fields'  => [
+                            [
+                                'name'    => 'images[intro]',
+                                'display' => 'intro_image',
+                                'type'    => 'image',
+                                'visible' => 'ce',
+                            ],
+                            [
+                                'name'    => 'images[main]',
+                                'display' => 'main_image',
+                                'type'    => 'image',
+                                'visible' => 'ce',
+                            ]
+
+                        ]
+                    ],
+                    [
+                        'name'    => 'meta',
+                        'type'    => 'tab',
+                        'visible' => 'ce',
+                        'fields'  => [
+                            [
+                                'name'    => 'meta[keyword]',
+                                'display' => 'meta_keywords',
+                                'type'    => 'text',
+                                'visible' => 'ce',
+                            ],
+                            [
+                                'name'    => 'meta[description]',
+                                'display' => 'meta_description',
+                                'type'    => 'textarea',
+                                'visible' => 'ce',
+                            ]
                         ]
                     ]
                 ]
