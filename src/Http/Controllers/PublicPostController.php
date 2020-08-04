@@ -36,6 +36,7 @@ class PublicPostController extends Controller
 
         $lastposts = Post::latest()->limit(5)->get();
 
+        // return $lastposts;
 
         $categories = PostCategory::limit(10)/*->with('children')*/->withCount('posts')->get();
 
@@ -60,6 +61,7 @@ class PublicPostController extends Controller
 
 
         $lastposts = Post::latest()->limit(5)->get();
+
 
 
         $categories = PostCategory::limit(10)/*->with('children')*/->withCount('posts')->get();

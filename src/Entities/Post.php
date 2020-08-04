@@ -34,7 +34,7 @@ class Post extends CrudModel
      *
      * @var array
      */
-    public $translatedAttributes = ['title', 'content','summary','images'];
+    public $translatedAttributes = ['title', 'content','summary','images','meta'];
 
 
     /**

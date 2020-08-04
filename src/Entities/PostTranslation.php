@@ -13,4 +13,9 @@ class PostTranslation extends TranslationModel
      * @var array
      */
     protected $fillable = ['title','summary','content','images'];
+
+    protected $casts = [
+        'images' => 'array',
+        'meta' => 'array'
+    ];
 }
