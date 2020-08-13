@@ -106,7 +106,7 @@ class PostCategory extends CrudModel
                             [
                                 'name'    => 'slug',
                                 'type'    => 'text',
-                                'visible' => 'ce',
+                                'visible' => 'ice',
                             ],
                             [
                                 'name'     => 'parent_id',
