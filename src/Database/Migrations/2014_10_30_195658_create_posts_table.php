@@ -42,11 +42,10 @@ class CreatePostsTable extends Migration
             $table->unique(['post_id', 'locale']);
             $table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade');
 
-            DB::statement('SET FOREIGN_KEY_CHECKS = 1');
-
-
-
         });
+
+        DB::statement('SET FOREIGN_KEY_CHECKS = 1');
+
     }
 
     /**

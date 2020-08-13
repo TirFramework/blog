@@ -2,12 +2,12 @@
 
 namespace Tir\Blog\Entities;
 
-use Cviebrock\EloquentSluggable\Sluggable;
-use Illuminate\Support\Facades\Auth;
-use Tir\Crud\Support\Eloquent\CrudModel;
-use Tir\Crud\Support\Eloquent\Translatable;
-use Tir\Store\Category\Entities\Category;
 use Tir\User\Entities\User;
+use Tir\Comment\Entities\Comment;
+use Tir\Crud\Support\Eloquent\CrudModel;
+use Tir\Store\Category\Entities\Category;
+use Cviebrock\EloquentSluggable\Sluggable;
+use Tir\Crud\Support\Eloquent\Translatable;
 
 class Post extends CrudModel
 {
@@ -95,17 +95,19 @@ class Post extends CrudModel
                             [
                                 'name'    => 'title',
                                 'type'    => 'text',
+                                'validation' => 'required',
                                 'visible' => 'ice',
                             ],
                             [
                                 'name'    => 'author_id',
                                 'type'    => 'relation',
-                                'relation' => ['author', 'last_name'],
+                                'relation' => ['author', 'name'],
                                 'visible' => 'ice',
                             ],
                             [
                                 'name'    => 'slug',
                                 'type'    => 'text',
+                                'validation' => 'required',
                                 'visible' => 'ce',
                             ],
                             [
@@ -132,6 +134,7 @@ class Post extends CrudModel
                             [
                                 'name'    => 'status',
                                 'type'    => 'select',
+                                'validation' => 'required',
                                 'data'    => ['draft'       => trans('post::panel.draft'),
                                               'published'   => trans('post::panel.published'),
                                               'unpublished' => trans('post::panel.unpublished')
@@ -178,7 +181,7 @@ class Post extends CrudModel
                                 'display' => 'meta_description',
                                 'type'    => 'textarea',
                                 'visible' => 'ce',
-                            ]
+                            ],
                         ]
                     ]
                 ]
@@ -192,6 +195,10 @@ class Post extends CrudModel
     {
         if( config('app.locale') =='fa' ){
             return jdate($value)->format('%H:%M %A %d %B %Y');
+        }
+        if( config('app.locale') =='en' ){
+             return date('M D , Y', strtotime( $value ));
+
         }
     }
 
@@ -208,4 +215,10 @@ class Post extends CrudModel
     public function author(){
         return $this->belongsTo(User::class, 'author_id');
     }
+
+    public function comments()
+    {
+        return $this->morphMany(Comment::class, 'commentable');
+    }
+
 }

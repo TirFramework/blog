@@ -2,8 +2,9 @@
 
 namespace Tir\Blog\Entities;
 
-use Cviebrock\EloquentSluggable\Sluggable;
+use Tir\Blog\Entities\Post;
 use Tir\Crud\Support\Eloquent\CrudModel;
+use Cviebrock\EloquentSluggable\Sluggable;
 use Tir\Crud\Support\Eloquent\Translatable;
 
 class PostCategory extends CrudModel
