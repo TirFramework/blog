@@ -49,8 +49,8 @@ class BlogServiceProvider extends ServiceProvider
         $menu = resolve('AdminMenu');
         $menu->item('content')->title('post::panel.content')->link('#')->add();
         $menu->item('content.blog')->title('post::panel.blog')->link('#')->add();
-        $menu->item('content.blog.category')->title('postCategory::panel.postCategories')->route('postCategory.index')->add();
-        $menu->item('content.blog.post')->title('post::panel.posts')->route('post.index')->add();
+        $menu->item('content.blog.category')->title('postCategory::panel.postCategories')->route('admin.postCategory.index')->add();
+        $menu->item('content.blog.post')->title('post::panel.posts')->route('admin.post.index')->add();
 
     }
 }
