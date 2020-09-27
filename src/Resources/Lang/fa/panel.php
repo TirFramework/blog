@@ -17,7 +17,6 @@ return [
     'summary' => 'خلاصه',
     'description' => 'توضیحات',
     'status' => 'وضعیت',
-    'meta_description' => 'توضیحات متا',
     'keywords' => 'کیوردها',
     'select' => 'انتخاب',
     'draft' => 'پیش‌نویس',
@@ -41,15 +40,18 @@ return [
 
 
 
-    'meta_keywords'         => 'کلمه کلیدی',
-
     'intro_image'         => 'عکس معرف',
     'main_image'         => 'عکس اصلی',
 
     
     'images[intro]'         => 'عکس معرف',
     'images[main]'         => 'عکس اصلی',
-    
-    'meta'         => 'متا',
+
+    'meta'                => 'تنظیمات متا',
+    'meta_description' => 'توضیحات متا',
+    'meta_keywords'    => 'کلیدواژه‌های متا',
+    'meta_title'       => 'عنوان متا',
+    'meta_custom'      => 'متا اختصاصی',
+
 
 ];

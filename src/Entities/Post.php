@@ -2,6 +2,7 @@
 
 namespace Tir\Blog\Entities;
 
+use Tir\Metadata\Eloquent\HasMetaData;
 use Tir\User\Entities\User;
 use Tir\Comment\Entities\Comment;
 use Tir\Crud\Support\Eloquent\CrudModel;
@@ -12,7 +13,7 @@ use Tir\Crud\Support\Eloquent\Translatable;
 class Post extends CrudModel
 {
 
-    use Translatable, Sluggable;
+    use Translatable, Sluggable, HasMetaData;
 
     /**
      * The attribute show route name
@@ -34,7 +35,7 @@ class Post extends CrudModel
      *
      * @var array
      */
-    public $translatedAttributes = ['title', 'content','summary','images','meta'];
+    public $translatedAttributes = ['title', 'content','summary','images'];
 
 
     /**
@@ -171,14 +172,27 @@ class Post extends CrudModel
                         'visible' => 'ce',
                         'fields'  => [
                             [
-                                'name'    => 'meta[keyword]',
-                                'display' => 'meta_keywords',
+                                'name'    => 'meta[meta_title]',
+                                'display' => 'meta_title',
                                 'type'    => 'text',
                                 'visible' => 'ce',
                             ],
                             [
-                                'name'    => 'meta[description]',
+                                'name'    => 'meta[meta_keywords]',
+                                'display' => 'meta_keywords',
+                                'type'    => 'metaKeywords',
+                                'multiple' => true,
+                                'visible' => 'ce',
+                            ],
+                            [
+                                'name'    => 'meta[meta_description]',
                                 'display' => 'meta_description',
+                                'type'    => 'textarea',
+                                'visible' => 'ce',
+                            ],
+                            [
+                                'name'    => 'meta[meta_custom]',
+                                'display' => 'meta_custom',
                                 'type'    => 'textarea',
                                 'visible' => 'ce',
                             ],
