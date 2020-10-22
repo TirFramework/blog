@@ -2,6 +2,7 @@
 
 namespace Tir\Blog\Http\Controllers;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Tir\Blog\Entities\Post;
@@ -16,27 +17,21 @@ class PublicPostController extends Controller
     public function postDetails($slug)
     {
 
-        // return $slug;
-
-        // $post = Post::where( 'slug', 'تست' )->firstOrFail();
         $post = Post::where( 'slug', $slug )->with('author')->with('categories')->firstOrFail();
-        // $post = Post::all();
-        
+
         
         $previous = Post::where('id', '<', $post->id)->orderBy('id','desc')->first();
         $next = Post::where('id', '>', $post->id)->orderBy('id')->first();
         
-        // return $post->categories()->firstOrFail()->posts()->get();
 
-        //  return $post->categories()->get()->pluck('id');
-        
-        $relatedPosts = Post::whereIn('id', $post->categories()->get()->pluck('id'))->where('id','!=',$post->id)->get();
-        
-        // return $relatedPosts;
+        $ids = $post->categories()->get()->pluck('id');
+        $relatedPosts = Post::whereHas('categories', function (Builder $query) use($ids) {
+            return $query->whereIn('post_categories.id', $ids );
+        })->where('id','!=', $post->id)->limit(6)->get();
+
 
         $lastposts = Post::latest()->limit(5)->get();
 
-        // return $lastposts;
 
         $categories = PostCategory::limit(10)/*->with('children')*/->withCount('posts')->get();
 
@@ -57,7 +52,7 @@ class PublicPostController extends Controller
         
         $category = PostCategory::where( 'slug', $slug )->firstOrFail();
 
-        $posts = $category->posts()->with('author')->with('categories')->paginate(15);
+        $posts = $category->posts()->latest()->with('author')->with('categories')->paginate(15);
 
 
         $lastposts = Post::latest()->limit(5)->get();
