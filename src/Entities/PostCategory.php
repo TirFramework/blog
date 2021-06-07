@@ -2,39 +2,31 @@
 
 namespace Tir\Blog\Entities;
 
-use Tir\Blog\Entities\Post;
-use Tir\Crud\Support\Eloquent\CrudModel;
 use Cviebrock\EloquentSluggable\Sluggable;
-use Tir\Crud\Support\Eloquent\Translatable;
+use Tir\Crud\Scopes\OwnerScope;
+use Tir\Crud\Support\Eloquent\BaseModel;
+use Tir\Crud\Support\Scaffold\Fields\Text;
+use Tir\User\Entities\User;
 
-class PostCategory extends CrudModel
+class PostCategory extends BaseModel
 {
 
-    use Translatable, Sluggable;
-
-    /**
-     * The attribute show route name
-     * and we use in fieldTypes and controllers
-     *
-     * @var string
-     */
-    public static $routeName = 'postCategory';
-
-    public $table = 'post_categories';
+//    use Translatable, Sluggable;
+    use Sluggable;
 
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = ['slug', 'parent_id', 'images', 'position', 'status', 'user_id'];
+    protected $fillable = ['title', 'slug', 'parent_id', 'images', 'position', 'status', 'user_id'];
 
     /**
      * The attributes that are translatable.
      *
      * @var array
      */
-    public $translatedAttributes = ['name', 'summary', 'description', 'meta'];
+//    public $translatedAttributes = ['name', 'summary', 'description', 'meta'];
 
 
     /**
@@ -42,12 +34,12 @@ class PostCategory extends CrudModel
      *
      * @var array
      */
-    protected $with = ['translations'];
+//    protected $with = ['translations'];
 
     public $timestamps = false;
 
 
-    public function sluggable()
+    public function sluggable(): array
     {
         return [
             'slug' => [
@@ -74,116 +66,22 @@ class PostCategory extends CrudModel
         ];
     }
 
-
-    /**
-     * This function return an object of field
-     * and we use this for generate admin panel page
-     * @return array
-     */
-    public function getFields()
+    protected static function boot()
     {
-        return [
-            [
-                'name'    => 'basic_information',
-                'type'    => 'group',
-                'visible' => 'ce',
-                'tabs'    => [
-                    [
-                        'name'    => 'postCategory_information',
-                        'type'    => 'tab',
-                        'visible' => 'ce',
-                        'fields'  => [
-                            [
-                                'name'    => 'id',
-                                'type'    => 'text',
-                                'visible' => 'io',
-                            ],
-                            [
-                                'name'    => 'name',
-                                'type'    => 'text',
-                                'visible' => 'ice',
-                            ],
-                            [
-                                'name'    => 'slug',
-                                'type'    => 'text',
-                                'visible' => 'ice',
-                            ],
-                            [
-                                'name'     => 'parent_id',
-                                'type'     => 'relation',
-                                'relation' => ['parent', 'name'],
-                                'visible'  => 'ce',
-                            ],
-                            [
-                                'name'    => 'summary',
-                                'type'    => 'textarea',
-                                'visible' => 'ce',
-                            ],
-                            [
-                                'name'    => 'description',
-                                'type'    => 'textEditor',
-                                'visible' => 'ce',
-                            ],
-                            [
-                                'name'    => 'status',
-                                'type'    => 'select',
-                                'data'    => ['draft'       => trans('post::panel.draft'),
-                                              'published'   => trans('post::panel.published'),
-                                              'unpublished' => trans('post::panel.unpublished')
-                                ],
-                                'visible' => 'cef',
-                            ]
-                        ]
-                    ],
-                    [
-                        'name'    => 'images',
-                        'type'    => 'tab',
-                        'visible' => 'ce',
-                        'fields'  => [
-                            [
-                                'name'    => 'images[header]',
-                                'display' => 'header_image',
-                                'type'    => 'image',
-                                'visible' => 'ce',
-                            ],
-                            [
-                                'name'    => 'images[main]',
-                                'display' => 'main_image',
-                                'type'    => 'image',
-                                'visible' => 'ce',
-                            ]
-
-                        ]
-                    ],
-                    [
-                        'name'    => 'meta',
-                        'type'    => 'tab',
-                        'visible' => 'ce',
-                        'fields'  => [
-                            [
-                                'name'    => 'meta[keyword]',
-                                'display' => 'meta_keywords',
-                                'type'    => 'text',
-                                'visible' => 'ce',
-                            ],
-                            [
-                                'name'    => 'meta[description]',
-                                'display' => 'meta_description',
-                                'type'    => 'textarea',
-                                'visible' => 'ce',
-                            ]
-
-                        ]
-                    ]
-                ]
-            ]
-        ];
+        parent::boot();
+        static::addGlobalScope(new OwnerScope);
     }
+
 
     //Additional methods //////////////////////////////////////////////////////////////////////////////////////////////
     public function parent()
     {
-        return $this->belongsTo(PostCategory::class, 'parent_id');
+        return $this->belongsTo(Role::class, 'parent_id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function posts()
@@ -195,5 +93,23 @@ class PostCategory extends CrudModel
 
     //Relations methods ///////////////////////////////////////////////////////////////////////////////////////////////
 
+    public bool $localization = false;
 
+
+    protected function setModel()
+    {
+        return $this;
+    }
+
+    protected function setModuleName(): string
+    {
+        return 'postCategory';
+    }
+
+    protected function setFields(): array
+    {
+        return [
+            Text::make('title')->rules('required'),
+        ];
+    }
 }

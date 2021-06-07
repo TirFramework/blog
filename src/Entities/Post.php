@@ -2,15 +2,15 @@
 
 namespace Tir\Blog\Entities;
 
+use Cviebrock\EloquentSluggable\Sluggable;
+use Tir\Comment\Entities\Comment;
+use Tir\Crud\Support\Eloquent\BaseModel;
+use Tir\Crud\Support\Eloquent\BaseScaffold;
+use Tir\Crud\Support\Eloquent\Translatable;
 use Tir\Metadata\Eloquent\HasMetaData;
 use Tir\User\Entities\User;
-use Tir\Comment\Entities\Comment;
-use Tir\Crud\Support\Eloquent\CrudModel;
-use Tir\Store\Category\Entities\Category;
-use Cviebrock\EloquentSluggable\Sluggable;
-use Tir\Crud\Support\Eloquent\Translatable;
 
-class Post extends CrudModel
+class Post extends BaseModel
 {
 
     use Translatable, Sluggable, HasMetaData;
@@ -223,7 +223,7 @@ class Post extends CrudModel
 
     public function categories()
     {
-        return $this->belongsToMany(PostCategory::class);
+        return $this->belongsToMany(Role::class);
     }
 
     public function author(){

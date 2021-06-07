@@ -10,7 +10,7 @@
     ],
     "require": {
         "tir/crud": "*",
-        "cviebrock/eloquent-sluggable": "^6.0"
+        "cviebrock/eloquent-sluggable": "^8.0"
     },
 
     "autoload": {

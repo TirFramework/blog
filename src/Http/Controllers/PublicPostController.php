@@ -3,21 +3,18 @@
 namespace Tir\Blog\Http\Controllers;
 
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Tir\Blog\Entities\Post;
-use Tir\Blog\Entities\PostCategory;
-
 use Illuminate\Routing\Controller;
+use Tir\Blog\Entities\Post;
+use Tir\Blog\Entities\Role;
 
 class PublicPostController extends Controller
 {
-    
+
     // TODO : Add scope status
     public function postDetails($slug)
     {
 
-        $post = Post::where( 'slug', $slug )->with('author')->with('categories')->firstOrFail();
+        $post = Post::where('slug', $slug)->with('author')->with('categories')->firstOrFail();
 
         
         $previous = Post::where('id', '<', $post->id)->orderBy('id','desc')->first();
@@ -33,7 +30,7 @@ class PublicPostController extends Controller
         $lastposts = Post::latest()->limit(5)->get();
 
 
-        $categories = PostCategory::limit(10)/*->with('children')*/->withCount('posts')->get();
+        $categories = Role::limit(10)/*->with('children')*/ ->withCount('posts')->get();
 
 
         // return $categories;
@@ -48,9 +45,9 @@ class PublicPostController extends Controller
 
     public function category($slug)
     {
-        
-        
-        $category = PostCategory::where( 'slug', $slug )->firstOrFail();
+
+
+        $category = Role::where('slug', $slug)->firstOrFail();
 
         $posts = $category->posts()->latest()->with('author')->with('categories')->paginate(15);
 
@@ -58,8 +55,7 @@ class PublicPostController extends Controller
         $lastposts = Post::latest()->limit(5)->get();
 
 
-
-        $categories = PostCategory::limit(10)/*->with('children')*/->withCount('posts')->get();
+        $categories = Role::limit(10)/*->with('children')*/ ->withCount('posts')->get();
 
         // return $posts;
 
