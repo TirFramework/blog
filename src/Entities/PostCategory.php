@@ -6,6 +6,7 @@ use Cviebrock\EloquentSluggable\Sluggable;
 use Tir\Crud\Scopes\OwnerScope;
 use Tir\Crud\Support\Eloquent\BaseModel;
 use Tir\Crud\Support\Scaffold\Fields\Text;
+use Tir\Crud\Support\Scaffold\Fields\Textarea;
 use Tir\User\Entities\User;
 
 class PostCategory extends BaseModel
@@ -110,6 +111,7 @@ class PostCategory extends BaseModel
     {
         return [
             Text::make('title')->rules('required'),
+            Textarea::make('desctiption')->rules('required'),
         ];
     }
 }
