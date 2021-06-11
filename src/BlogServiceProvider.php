@@ -59,7 +59,7 @@ class BlogServiceProvider extends ServiceProvider
     private function registerModule()
     {
         $category = new Module();
-        $category->setName('category');
+        $category->setName('postCategory');
         $category->enable();
         Modules::init()->register($category);
     }
