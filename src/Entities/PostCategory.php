@@ -109,7 +109,7 @@ class PostCategory extends BaseModel
     protected function setFields(): array
     {
         return [
-            Text::make('title')->rules('required')->placeholder('please type your title'),
+            Text::make('title')->rules('required'),
         ];
     }
 }

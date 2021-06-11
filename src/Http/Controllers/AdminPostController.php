@@ -9,15 +9,18 @@ use Tir\Crud\Controllers\CrudController;
 
 class AdminPostController extends CrudController
 {
-    protected $model = Post::Class;
-
-    public function storeRequestManipulation(Request $request)
+    protected function setModel(): string
     {
-        if(empty($request->author_id)){
-            $request->merge(['author_id' => Auth::id()]);
-        }
-
-        return $request;
+        return Post::Class;
     }
+
+    // public function storeRequestManipulation(Request $request)
+    // {
+    //     if(empty($request->author_id)){
+    //         $request->merge(['author_id' => Auth::id()]);
+    //     }
+
+    //     return $request;
+    // }
 
 }
