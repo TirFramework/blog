@@ -3,15 +3,12 @@
 namespace Tir\Blog\Entities;
 
 use Cviebrock\EloquentSluggable\Sluggable;
-use Tir\Crud\Scopes\OwnerScope;
 use Tir\Crud\Support\Eloquent\BaseModel;
 use Tir\Crud\Support\Scaffold\Fields\Text;
 use Tir\User\Entities\User;
 
 class PostCategory extends BaseModel
 {
-
-//    use Translatable, Sluggable;
     use Sluggable;
 
     /**
@@ -19,24 +16,23 @@ class PostCategory extends BaseModel
      *
      * @var array
      */
+    // TODO make user_id autoloaded using Auth Facade
     protected $fillable = ['title', 'slug', 'parent_id', 'images', 'position', 'status', 'user_id'];
 
-    /**
-     * The attributes that are translatable.
-     *
-     * @var array
-     */
-//    public $translatedAttributes = ['name', 'summary', 'description', 'meta'];
-
-
-    /**
-     * The relations to eager load on every query.
-     *
-     * @var array
-     */
-//    protected $with = ['translations'];
-
     public $timestamps = false;
+
+
+    protected function setModuleName(): string
+    {
+        return 'postCategory';
+    }
+
+    protected function setFields(): array
+    {
+        return [
+            Text::make('title')->rules('required'),
+        ];
+    }
 
 
     public function sluggable(): array
@@ -52,31 +48,10 @@ class PostCategory extends BaseModel
         'images' => 'array'
     ];
 
-    /**
-     * This function return array for validation
-     *
-     * @return array
-     */
-    public function getValidation()
-    {
-        return [
-            'name'   => 'required',
-            'slug'   => 'required',
-            'status' => 'required',
-        ];
-    }
 
-    protected static function boot()
-    {
-        parent::boot();
-        static::addGlobalScope(new OwnerScope);
-    }
-
-
-    //Additional methods //////////////////////////////////////////////////////////////////////////////////////////////
     public function parent()
     {
-        return $this->belongsTo(Role::class, 'parent_id');
+        return $this->belongsTo(PostCategory::class, 'parent_id');
     }
 
     public function user()
@@ -86,30 +61,8 @@ class PostCategory extends BaseModel
 
     public function posts()
     {
-        // return PostCategoryTranslation::class;
         return $this->belongsToMany(Post::class);
     }
 
 
-    //Relations methods ///////////////////////////////////////////////////////////////////////////////////////////////
-
-    public bool $localization = false;
-
-
-    protected function setModel()
-    {
-        return $this;
-    }
-
-    protected function setModuleName(): string
-    {
-        return 'postCategory';
-    }
-
-    protected function setFields(): array
-    {
-        return [
-            Text::make('title')->rules('required'),
-        ];
-    }
 }

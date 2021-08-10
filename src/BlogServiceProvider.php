@@ -30,7 +30,6 @@ class BlogServiceProvider extends ServiceProvider
 
 
         $this->loadRoutesFrom(__DIR__ . '/Routes/admin.php');
-        $this->loadRoutesFrom(__DIR__ . '/Routes/public.php');
 
 
         $this->loadTranslationsFrom(__DIR__ . '/Resources/Lang/', 'post');
@@ -59,9 +58,12 @@ class BlogServiceProvider extends ServiceProvider
     private function registerModule()
     {
         $category = new Module();
-        $category->setName('postCategory');
-        $category->enable();
+        $category->setName('postCategory')->enable();
         Modules::init()->register($category);
+
+        $post = new Module();
+        $post->setName('post')->enable();
+        Modules::init()->register($post);
     }
 
 
