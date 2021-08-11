@@ -22,6 +22,7 @@ class PostCategory extends BaseModel
     public $timestamps = false;
 
 
+
     protected function setModuleName(): string
     {
         return 'postCategory';
