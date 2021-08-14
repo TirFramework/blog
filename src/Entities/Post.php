@@ -35,6 +35,7 @@ class Post extends BaseModel
     protected function setFields(): array
     {
         return [
+            Select::make('post_category_id')->relation('categories', 'title')->rules('required'),
             Text::make('title')->rules('required')->display(trans('post::panel.title')),
             Text::make('slug')->rules('required'),
             TextArea::make('description')->rules('required'),
