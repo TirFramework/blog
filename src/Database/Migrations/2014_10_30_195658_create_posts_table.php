@@ -29,7 +29,7 @@ class CreatePostsTable extends Migration
             $table->text('full_image')->nullable();
             $table->string('meta_title', 250)->nullable();
             $table->text('meta_description')->nullable();
-            $table->text('meta_description')->nullable();
+            $table->text('meta_keywords')->nullable();
             $table->bigInteger('views')->default(0);
             $table->timestamp('published_at')->default(now());
             $table->timestamps();
