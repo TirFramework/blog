@@ -4,6 +4,7 @@ namespace Tir\Blog\Entities;
 
 use Cviebrock\EloquentSluggable\Sluggable;
 use Tir\Crud\Support\Eloquent\BaseModel;
+use Tir\Crud\Support\Scaffold\Fields\Select;
 use Tir\Crud\Support\Scaffold\Fields\Text;
 use Tir\User\Entities\User;
 
@@ -29,6 +30,7 @@ class Post extends BaseModel
         return [
             Text::make('title')->rules('required')->display(trans('post::panel.title')),
             Text::make('body')->rules('required'),
+            Select::make('status')->data(['active' => 1, 'deactive' => 0])->rules('required'),
         ];
     }
 

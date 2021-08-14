@@ -4,6 +4,8 @@ namespace Tir\Blog\Entities;
 
 use Cviebrock\EloquentSluggable\Sluggable;
 use Tir\Crud\Support\Eloquent\BaseModel;
+use Tir\Crud\Support\Scaffold\Fields\Number;
+use Tir\Crud\Support\Scaffold\Fields\Select;
 use Tir\Crud\Support\Scaffold\Fields\Text;
 use Tir\User\Entities\User;
 
@@ -17,7 +19,7 @@ class PostCategory extends BaseModel
      * @var array
      */
     // TODO make user_id autoloaded using Auth Facade
-    protected $fillable = ['title', 'slug', 'parent_id', 'images', 'position', 'status', 'user_id'];
+    protected $fillable = ['parent_id', 'user_id', 'title', 'slug', 'description', 'image', 'position', 'status',];
 
     public $timestamps = false;
 
@@ -31,6 +33,24 @@ class PostCategory extends BaseModel
     {
         return [
             Text::make('title')->rules('required'),
+            Text::make('slug')->rules('required'),
+            Text::make('description'),
+            Text::make('image'),
+            Number::make('position'),
+            Select::make('status')->data([
+                [
+                    'text' => 'Draft',
+                    'value' => 0
+                ],
+                [
+                    'text' => 'Published',
+                    'value' => 1
+                ],
+                [
+                    'text' => 'UnPublished',
+                    'value' => 2
+                ]
+            ])->default('Draft'),
         ];
     }
 
