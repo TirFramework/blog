@@ -31,7 +31,7 @@ class Post extends BaseModel
         return [
             Text::make('title')->rules('required')->display(trans('post::panel.title')),
             Text::make('body')->rules('required'),
-            Relation::make('category_id')->relation('categories','title')
+            Select::make('category_id')->relation('categories','title')
         ];
     }
 
