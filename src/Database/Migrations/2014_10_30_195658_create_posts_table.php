@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreatePostsTable extends Migration
 {
@@ -11,39 +13,28 @@ class CreatePostsTable extends Migration
      */
     public function up()
     {
-//        DB::statement('SET FOREIGN_KEY_CHECKS = 0');
-//
-//        Schema::create('posts', function (Blueprint $table) {
-//            $table->bigIncrements('id');
-//            $table->bigInteger('user_id');
-//            $table->integer('author_id');
-//            $table->string('slug')->unique();
-//            $table->integer('position')->nullable();
-//            $table->enum('status', ['published', 'unpublished','draft'])->default('draft');
-//            $table->boolean('top')->nullable();
-//            $table->integer('views')->default(0);
-//            $table->timestamp('published_at')->useCurrent = true;
-//            $table->timestamps();
-//            $table->softDeletes();
-//        });
-//
-//        Schema::create('post_translations', function (Blueprint $table) {
-//
-//            $table->bigIncrements('id');
-//            $table->bigInteger('post_id')->unsigned();
-//            $table->string('title');
-//            $table->string('locale');
-//            $table->text('images')->nullable();
-//            $table->text('summary')->nullable();
-//            $table->text('content')->nullable();
-//            $table->text('meta_description')->nullable();
-//
-//            $table->unique(['post_id', 'locale']);
-//            $table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade');
-//
-//        });
-//
-//        DB::statement('SET FOREIGN_KEY_CHECKS = 1');
+        Schema::disableForeignKeyConstraints();
+
+       Schema::create('posts', function (Blueprint $table) {
+           $table->bigIncrements('id');
+           $table->bigInteger('user_id');
+           $table->string('title');
+           $table->integer('author_id');
+           $table->string('slug')->unique();
+           $table->integer('position')->nullable();
+           $table->enum('status', ['published', 'unpublished','draft'])->default('draft');
+           $table->text('images')->nullable();
+           $table->text('summary')->nullable();
+           $table->text('content')->nullable();
+           $table->text('meta_description')->nullable();
+           $table->boolean('top')->nullable();
+           $table->integer('views')->default(0);
+           $table->timestamp('published_at')->useCurrent = true;
+           $table->timestamps();
+           $table->softDeletes();
+       });
+
+       Schema::enableForeignKeyConstraints();
 
     }
 
@@ -54,12 +45,12 @@ class CreatePostsTable extends Migration
      */
     public function down()
     {
-//        DB::statement('SET FOREIGN_KEY_CHECKS = 0');
-//
-//        Schema::dropIfExists('posts');
-//        Schema::dropIfExists('post_translations');
-//
-//        DB::statement('SET FOREIGN_KEY_CHECKS = 1');
+
+       Schema::disableForeignKeyConstraints();
+       Schema::dropIfExists('posts');
+       Schema::dropIfExists('post_translations');
+       Schema::enableForeignKeyConstraints();
+
 
     }
 }
