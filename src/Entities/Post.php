@@ -20,7 +20,7 @@ class Post extends BaseModel
      * @var array
      */
     protected array $fillable = [
-        'user_id', 'author_id', 'post_category_id',
+        'user_id', 'author_id',
         'title', 'slug', 'description', 'summary',
         'meta_title', 'meta_description', 'meta_keywords',
         'thumb_image', 'full_image',
@@ -35,9 +35,10 @@ class Post extends BaseModel
     protected function setFields(): array
     {
         return [
-            Select::make('post_category_id')->relation('categories', 'title')->rules('required'),
             Text::make('title')->rules('required')->display(trans('post::panel.title')),
             Text::make('slug')->rules('required'),
+            Select::make('post_category_id')->relation('categories', 'title')->multiple()->rules('required'),
+            Select::make('author_id')->relation('author', 'name')->rules('required'),
             TextArea::make('description')->rules('required'),
             TextArea::make('summary')->rules('required'),
             Text::make('meta_title'),

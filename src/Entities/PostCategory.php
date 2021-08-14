@@ -19,7 +19,6 @@ class PostCategory extends BaseModel
      *
      * @var array
      */
-    // TODO make user_id autoloaded using Auth Facade
     protected array $fillable = ['parent_id', 'user_id', 'title', 'slug', 'description', 'image', 'position', 'status'];
 
     public $timestamps = false;
@@ -33,20 +32,24 @@ class PostCategory extends BaseModel
     protected function setFields(): array
     {
         return [
-            Text::make('parent_id'),
+            Select::make('parent_id')->relation('parent','title')->display('parent'),
             Text::make('title')->rules('required'),
-            Text::make('slug')->rules('required'),
+            Text::make('slug')->rules('required','unique:post_categories,slug,'.$this->id),
             TextArea::make('description'),
             Text::make('image'),
             Number::make('position'),
             Select::make('status')->data([
                 [
-                    'text' => 'Active',
+                    'text' => 'Draft',
                     'value' => 0
                 ],
                 [
-                    'text' => 'Deactive',
+                    'text' => 'Unpublished',
                     'value' => 1
+                ],
+                [
+                    'text' => 'Published',
+                    'value' => 2
                 ],
             ])->default('Draft'),
         ];
