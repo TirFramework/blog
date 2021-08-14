@@ -7,6 +7,7 @@ use Tir\Crud\Support\Eloquent\BaseModel;
 use Tir\Crud\Support\Scaffold\Fields\Number;
 use Tir\Crud\Support\Scaffold\Fields\Select;
 use Tir\Crud\Support\Scaffold\Fields\Text;
+use Tir\Crud\Support\Scaffold\Fields\TextArea;
 use Tir\User\Entities\User;
 
 class PostCategory extends BaseModel
@@ -19,10 +20,9 @@ class PostCategory extends BaseModel
      * @var array
      */
     // TODO make user_id autoloaded using Auth Facade
-    protected $fillable = ['parent_id', 'user_id', 'title', 'slug', 'description', 'image', 'position', 'status',];
+    protected array $fillable = ['parent_id', 'user_id', 'title', 'slug', 'description', 'image', 'position', 'status'];
 
     public $timestamps = false;
-
 
 
     protected function setModuleName(): string
@@ -33,24 +33,21 @@ class PostCategory extends BaseModel
     protected function setFields(): array
     {
         return [
+            Text::make('parent_id'),
             Text::make('title')->rules('required'),
             Text::make('slug')->rules('required'),
-            Text::make('description'),
+            TextArea::make('description'),
             Text::make('image'),
             Number::make('position'),
             Select::make('status')->data([
                 [
-                    'text' => 'Draft',
+                    'text' => 'Active',
                     'value' => 0
                 ],
                 [
-                    'text' => 'Published',
+                    'text' => 'Deactive',
                     'value' => 1
                 ],
-                [
-                    'text' => 'UnPublished',
-                    'value' => 2
-                ]
             ])->default('Draft'),
         ];
     }
@@ -64,11 +61,6 @@ class PostCategory extends BaseModel
             ]
         ];
     }
-
-    protected $casts = [
-        'images' => 'array'
-    ];
-
 
     public function parent()
     {

@@ -17,7 +17,7 @@ class CreatePostCategoriesTable extends Migration
 
 
         Schema::create('post_categories', function (Blueprint $table) {
-            $table->id('id');
+            $table->id();
             $table->unsignedBigInteger('parent_id')->nullable();
             $table->unsignedBigInteger('user_id');
             $table->string('title', 250)->unique();
@@ -31,9 +31,9 @@ class CreatePostCategoriesTable extends Migration
 
         Schema::create('post_post_category', function (Blueprint $table) {
 
-            $table->bigIncrements('id');
-            $table->bigInteger('post_category_id')->unsigned();
-            $table->bigInteger('post_id')->unsigned();
+            $table->id('id');
+            $table->unsignedBigInteger('post_category_id');
+            $table->unsignedBigInteger('post_id');
 
 
             $table->foreign('post_category_id')->references('id')->on('post_categories')->onDelete('CASCADE');

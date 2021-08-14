@@ -15,26 +15,28 @@ class CreatePostsTable extends Migration
     {
         Schema::disableForeignKeyConstraints();
 
-       Schema::create('posts', function (Blueprint $table) {
-           $table->bigIncrements('id');
-           $table->bigInteger('user_id');
-           $table->string('title');
-           $table->integer('author_id');
-           $table->string('slug')->unique();
-           $table->integer('position')->nullable();
-           $table->enum('status', ['published', 'unpublished','draft'])->default('draft');
-           $table->text('images')->nullable();
-           $table->text('summary')->nullable();
-           $table->text('content')->nullable();
-           $table->text('meta_description')->nullable();
-           $table->boolean('top')->nullable();
-           $table->integer('views')->default(0);
-           $table->timestamp('published_at')->useCurrent = true;
-           $table->timestamps();
-           $table->softDeletes();
-       });
+        Schema::create('posts', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('author_id');
+            $table->unsignedBigInteger('post_category_id');
+            $table->string('title', 250)->unique();
+            $table->string('slug', 250)->unique();
+            $table->text('description');
+            $table->text('summary');
+            $table->unsignedTinyInteger('status')->default(0);
+            $table->text('thumb_image')->nullable();
+            $table->text('full_image')->nullable();
+            $table->string('meta_title', 250)->nullable();
+            $table->text('meta_description')->nullable();
+            $table->text('meta_description')->nullable();
+            $table->bigInteger('views')->default(0);
+            $table->timestamp('published_at')->default(now());
+            $table->timestamps();
+            $table->softDeletes();
+        });
 
-       Schema::enableForeignKeyConstraints();
+        Schema::enableForeignKeyConstraints();
 
     }
 
@@ -45,12 +47,8 @@ class CreatePostsTable extends Migration
      */
     public function down()
     {
-
-       Schema::disableForeignKeyConstraints();
-       Schema::dropIfExists('posts');
-       Schema::dropIfExists('post_translations');
-       Schema::enableForeignKeyConstraints();
-
-
+        Schema::disableForeignKeyConstraints();
+        Schema::dropIfExists('posts');
+        Schema::enableForeignKeyConstraints();
     }
 }
