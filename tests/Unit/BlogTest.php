@@ -54,7 +54,6 @@ class BlogTest extends TestCase
         $response = $this->post('/api/v1/admin/post/?api_token=a',
             [
                 'title'            => 'Test Post 1',
-                'user_id'           => '1',
                 'slug'             => 'test post 1',
                 'post_category_id' => '1',
                 'author_id'        => '1',
