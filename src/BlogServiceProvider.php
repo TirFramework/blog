@@ -42,6 +42,10 @@ class BlogServiceProvider extends ServiceProvider
 
         $this->registerModule();
 
+        $this->publishes([
+            __DIR__ . '/../tests/' => base_path('/tests'),
+        ], 'blog');
+
 
     }
 
