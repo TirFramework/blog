@@ -37,7 +37,8 @@ class Post extends BaseModel
         return [
             Text::make('title')->rules('required')->display(trans('post::panel.title')),
             Text::make('slug')->rules('required'),
-            Select::make('post_category_id')->relation('categories', 'title')->multiple()->rules('required'),
+            Select::make('post_category_id')->relation('categories', 'title')->multiple()->rules('required')
+                ->filter(),
             Select::make('author_id')->relation('author', 'name')->rules('required'),
             TextArea::make('description')->rules('required'),
             TextArea::make('summary')->rules('required'),
