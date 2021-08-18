@@ -15,11 +15,11 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         DB::table('post_categories')->insert([
-            'id'        => '1',
+            'id'        => '2',
             'user_id'   => '1',
             'title'     => 'test',
             'slug'      => 'test',
-            'parent_id' => '1'
+            'parent_id' => '2'
         ]);
 
     }

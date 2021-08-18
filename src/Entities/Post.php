@@ -57,7 +57,7 @@ class Post extends BaseModel
                     'text' => 'UnPublished',
                     'value' => 2
                 ]
-            ])->default('Draft')->rules('required'),
+            ])->default('Draft')->rules('required')->filter(),
         ];
     }
 
@@ -70,7 +70,6 @@ class Post extends BaseModel
             ]
         ];
     }
-
 
     public function categories()
     {
