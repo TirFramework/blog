@@ -20,6 +20,7 @@ class BlogTest extends TestCase
 //    use RefreshDatabase;
     private PostCategory $postCategory;
     private Post $post;
+    private $user;
 
 
     /**
@@ -38,7 +39,6 @@ class BlogTest extends TestCase
 
         $this->post = new Post();
         $this->post->scaffold();
-
     }
 
     public function test_post_category_index_request()
@@ -51,7 +51,8 @@ class BlogTest extends TestCase
         $cols = $response['cols'];
 
         for ($i = 0; $i < count($fields); ++$i) {
-            assert($fields[$i]->name == $cols[$i]['dataIndex']);
+//            echo $fields[$i]->name . '=' . $cols[$i]['fieldName']."\n";
+            assert($fields[$i]->name == $cols[$i]['fieldName']);
         }
 
         $response->assertStatus(200);
@@ -88,7 +89,8 @@ class BlogTest extends TestCase
             [
                 'title'     => 'Test Post 1',
                 'slug'      => 'test post 1',
-                'parent_id' => '1',
+                'user_id' => $this->user->id,
+                'parent_id' => '2',
                 'status'    => '0'
             ]
         );
@@ -126,7 +128,7 @@ class BlogTest extends TestCase
             [
                 'title'     => 'Test Post 1 edited',
                 'slug'      => 'test post 1',
-                'parent_id' => '1',
+                'parent_id' => '2',
                 'status'    => '0'
             ]
         );
@@ -154,7 +156,7 @@ class BlogTest extends TestCase
         $cols = $response['cols'];
 
         for ($i = 0; $i < count($fields); ++$i) {
-            assert($fields[$i]->name == $cols[$i]['dataIndex']);
+            assert($fields[$i]->name == $cols[$i]['fieldName']);
         }
 
         $response->assertStatus(200);
@@ -195,7 +197,7 @@ class BlogTest extends TestCase
             [
                 'title'            => 'Test Post 1',
                 'slug'             => 'test post 1',
-                'post_category_id' => PostCategory::first()->id,
+                'categories' => PostCategory::first()->id,
                 'author_id'        => '1',
                 'description'      => 'this is test description',
                 'summary'          => 'this is test summary',
@@ -241,7 +243,7 @@ class BlogTest extends TestCase
             [
                 'title'            => 'Test Post 1 edited',
                 'slug'             => 'test post 1',
-                'post_category_id' => PostCategory::first()->id,
+                'categories' => PostCategory::first()->id,
                 'author_id'        => '1',
                 'description'      => 'this is test description',
                 'summary'          => 'this is test summary',
