@@ -7,6 +7,7 @@ use Tir\Crud\Support\Eloquent\BaseModel;
 use Tir\Crud\Support\Scaffold\Fields\Select;
 use Tir\Crud\Support\Scaffold\Fields\Text;
 use Tir\Crud\Support\Scaffold\Fields\TextArea;
+use Tir\FileManager\Scaffold\Fields\FileUploader;
 use Tir\User\Entities\User;
 
 class Post extends BaseModel
@@ -39,6 +40,7 @@ class Post extends BaseModel
             Text::make('slug')->rules('required')->rules('required', 'unique:posts,slug,' . $this->id),
             Select::make('categories')->relation('categories', 'title')->multiple()->rules('required')
                 ->filter(),
+            FileUploader::make('image'),
             Select::make('author_id')->relation('author', 'name')->rules('required'),
             TextArea::make('description')->rules('required'),
             TextArea::make('summary')->rules('required'),
