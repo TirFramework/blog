@@ -14,13 +14,15 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('post_categories')->insert([
-            'id'        => '2',
-            'user_id'   => '1',
-            'title'     => 'test',
-            'slug'      => 'test',
-            'parent_id' => '2'
-        ]);
+        for($i = 1; $i<50; $i++) {
+            DB::table('post_categories')->insert([
+                'id'        => $i,
+                'user_id'   => '1',
+                'title'     => 'test' . $i,
+                'slug'      => 'test' . $i,
+                'parent_id' => '2'
+            ]);
+        }
 
     }
 }
