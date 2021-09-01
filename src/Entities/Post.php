@@ -50,15 +50,15 @@ class Post extends BaseModel
             Text::make('meta_keywords'),
             Select::make('status')->data([
                 [
-                    'text' => 'Draft',
+                    'label' => 'Draft',
                     'value' => 0
                 ],
                 [
-                    'text' => 'Published',
+                    'label' => 'Published',
                     'value' => 1
                 ],
                 [
-                    'text' => 'UnPublished',
+                    'label' => 'UnPublished',
                     'value' => 2
                 ]
             ])->default('Draft')->rules('required')->filter(),
