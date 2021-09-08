@@ -19,7 +19,7 @@ class PostCategory extends BaseModel
      *
      * @var array
      */
-    protected array $fillable = ['parent_id', 'user_id', 'title', 'slug', 'description', 'image', 'position', 'status'];
+    protected $fillable = ['parent_id', 'user_id', 'title', 'slug', 'description', 'image', 'position', 'status'];
 
     public $timestamps = false;
 
