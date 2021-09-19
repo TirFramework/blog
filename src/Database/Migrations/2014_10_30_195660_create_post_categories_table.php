@@ -25,7 +25,7 @@ class CreatePostCategoriesTable extends Migration
             $table->text('description')->nullable();
             $table->text('image')->nullable();
             $table->integer('position')->nullable();
-            $table->unsignedTinyInteger('status')->default(0);
+            $table->string('status')->default('Draft');
             $table->softDeletes();
         });
 

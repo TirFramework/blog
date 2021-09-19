@@ -23,7 +23,7 @@ class CreatePostsTable extends Migration
             $table->string('slug', 250)->unique();
             $table->text('description');
             $table->text('summary');
-            $table->unsignedTinyInteger('status')->default(0);
+            $table->string('status')->default('Draft');
             $table->text('thumb_image')->nullable();
             $table->text('full_image')->nullable();
             $table->string('meta_title', 250)->nullable();

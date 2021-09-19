@@ -44,7 +44,7 @@ class Post extends BaseModel
         return [
             Text::make('title')->rules('required')->display(trans('post::panel.title')),
             Text::make('slug')->rules('required')->rules('required', 'unique:posts,slug,' . $this->id),
-            Select::make('categories')->relation('categories', 'title')->multiple()->rules('required')->filter(),
+            Select::make('categories')->relation('categories', 'title')->multiple()->rules('required'),
             FileUploader::make('thumb_image')->maxCount(10)->hideFromIndex(),
             FileUploader::make('full_image')->hideFromIndex(),
             Select::make('author_id')->relation('author', 'name')->rules('required'),
@@ -56,15 +56,15 @@ class Post extends BaseModel
             Select::make('status')->data([
                 [
                     'label' => 'Draft',
-                    'value' => 0
+                    'value' => 'Draft'
                 ],
                 [
                     'label' => 'Published',
-                    'value' => 1
+                    'value' => 'Published'
                 ],
                 [
                     'label' => 'UnPublished',
-                    'value' => 2
+                    'value' => 'UnPublished'
                 ]
             ])->default('Draft')->rules('required')->filter(),
         ];

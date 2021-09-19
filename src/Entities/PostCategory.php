@@ -41,15 +41,15 @@ class PostCategory extends BaseModel
             Select::make('status')->data([
                 [
                     'label' => 'Draft',
-                    'value' => 0
+                    'value' => 'Draft'
                 ],
                 [
                     'label' => 'Unpublished',
-                    'value' => 1
+                    'value' => 'Unpublished'
                 ],
                 [
                     'label' => 'Published',
-                    'value' => 2
+                    'value' => 'Published'
                 ],
             ])->default('Draft'),
         ];
