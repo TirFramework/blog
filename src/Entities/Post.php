@@ -66,7 +66,7 @@ class Post extends BaseModel
                     'label' => 'UnPublished',
                     'value' => 'UnPublished'
                 ]
-            ])->default('Draft')->rules('required')->filter(),
+            ])->default('Draft')->rules('required')->comment('Post view status')->filter(),
         ];
     }
 
