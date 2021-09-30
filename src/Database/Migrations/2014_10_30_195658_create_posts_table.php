@@ -19,13 +19,14 @@ class CreatePostsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('author_id');
+            $table->string('locale')->nullable();
             $table->string('title', 250);
             $table->string('slug', 250)->unique();
             $table->text('description');
             $table->text('summary');
             $table->string('status')->default('Draft');
-            $table->text('thumb_image')->nullable();
-            $table->text('full_image')->nullable();
+            $table->text('intro_image')->nullable();
+            $table->text('main_image')->nullable();
             $table->string('meta_title', 250)->nullable();
             $table->text('meta_description')->nullable();
             $table->text('meta_keywords')->nullable();

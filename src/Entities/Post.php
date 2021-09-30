@@ -25,12 +25,13 @@ class Post extends BaseModel
         'user_id', 'author_id',
         'title', 'slug', 'description', 'summary',
         'meta_title', 'meta_description', 'meta_keywords',
-        'thumb_image', 'full_image',
+        'locale',
+        'intro_image', 'main_image',
         'status'];
 
     protected $casts = [
-        'full_image' => 'array',
-        'thumb_image' => 'array',
+        'intro_image' => 'array',
+        'main_image' => 'array',
     ];
     
 
@@ -42,13 +43,23 @@ class Post extends BaseModel
     protected function setFields(): array
     {
         return [
+            Select::make('locale')->data([
+                [
+                    'label' => 'Fa',
+                    'value' => 'Fa'
+                ],
+                [
+                    'label' => 'En',
+                    'value' => 'En'
+                ]
+            ])->default('Fa')->rules('required')->filter(),
             Text::make('title')->rules('required')->display(trans('post::panel.title')),
-            Text::make('slug')->rules('required')->rules('required', 'unique:posts,slug,' . $this->id),
+            Text::make('slug')->rules('required')->rules('required', 'unique:posts,slug,' . $this->id)->hideFromIndex(),
             Select::make('categories')->relation('categories', 'title')->multiple()->rules('required'),
-            FileUploader::make('thumb_image')->maxCount(10)->hideFromIndex(),
-            FileUploader::make('full_image')->hideFromIndex(),
+            FileUploader::make('intro_image')->maxCount(10)->hideFromIndex(),
+            FileUploader::make('main_image')->hideFromIndex(),
             Select::make('author_id')->relation('author', 'name')->rules('required'),
-            Editor::make('description')->height(800)->rules('required')->hideFromIndex(),
+            Editor::make('description')->height(800)->rules('required')->hideFromIndex()->hideFromIndex(),
             TextArea::make('summary')->rules('required')->hideFromIndex(),
             Text::make('meta_title')->hideFromIndex(),
             TextArea::make('meta_description')->hideFromIndex(),

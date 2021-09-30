@@ -20,6 +20,7 @@ class CreatePostCategoriesTable extends Migration
             $table->id();
             $table->unsignedBigInteger('parent_id')->nullable();
             $table->unsignedBigInteger('user_id');
+            $table->string('locale')->nullable();
             $table->string('title', 250);
             $table->string('slug', 250)->unique();
             $table->text('description')->nullable();

@@ -19,8 +19,7 @@ class PostCategory extends BaseModel
      *
      * @var array
      */
-    protected $fillable = ['parent_id', 'user_id', 'title', 'slug', 'description', 'image', 'position', 'status'];
-
+    protected $fillable = ['parent_id', 'user_id', 'title', 'slug', 'description', 'image', 'position', 'status', 'locale'];
     public $timestamps = false;
 
 
@@ -32,11 +31,21 @@ class PostCategory extends BaseModel
     protected function setFields(): array
     {
         return [
-            Select::make('parent_id')->relation('parent','title')->display('parent'),
+            Select::make('locale')->data([
+                [
+                    'label' => 'Fa',
+                    'value' => 'Fa'
+                ],
+                [
+                    'label' => 'En',
+                    'value' => 'En'
+                ]
+            ])->default('Fa')->rules('required')->filter(),
+            Select::make('parent_id')->relation('parent','title')->display('parent')->hideFromIndex(),
             Text::make('title')->rules('required'),
-            Text::make('slug')->rules('required','unique:post_categories,slug,'.$this->id),
-            TextArea::make('description'),
-            Text::make('image'),
+            Text::make('slug')->rules('required','unique:post_categories,slug,'.$this->id)->hideFromIndex(),
+            // TextArea::make('description')->hideFromIndex(),
+            // Text::make('image')->hideFromIndex(),
             Number::make('position'),
             Select::make('status')->data([
                 [
