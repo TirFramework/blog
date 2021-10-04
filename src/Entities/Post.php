@@ -101,4 +101,11 @@ class Post extends BaseModel
         return $this->belongsTo(User::class, 'author_id');
     }
 
+    
+    public function scopeSearch($query, $keywords)
+    {
+        $query->where('title', 'LIKE', '%' . $keywords . '%');
+        return $query;
+    }
+
 }

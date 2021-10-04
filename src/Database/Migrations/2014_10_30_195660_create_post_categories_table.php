@@ -37,8 +37,8 @@ class CreatePostCategoriesTable extends Migration
             $table->unsignedBigInteger('post_id');
 
 
-            $table->foreign('post_category_id')->references('id')->on('post_categories')->onDelete('CASCADE');
-            $table->foreign('post_id')->references('id')->on('posts')->onDelete('CASCADE');
+            // $table->foreign('post_category_id')->references('id')->on('post_categories')->onDelete('CASCADE');
+            // $table->foreign('post_id')->references('id')->on('posts')->onDelete('CASCADE');
         });
 
         Schema::enableForeignKeyConstraints();
