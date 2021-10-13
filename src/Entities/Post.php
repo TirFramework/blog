@@ -4,6 +4,7 @@ namespace Tir\Blog\Entities;
 
 use Cviebrock\EloquentSluggable\Sluggable;
 use Tir\Crud\Support\Eloquent\BaseModel;
+use Tir\Crud\Support\Eloquent\IsTranslatable;
 use Tir\Crud\Support\Scaffold\Fields\Select;
 use Tir\Crud\Support\Scaffold\Fields\Text;
 use Tir\Crud\Support\Scaffold\Fields\Editor;
@@ -15,6 +16,7 @@ class Post extends BaseModel
 {
 
     use Sluggable;
+    use IsTranslatable;
 
     /**
      * The attributes that are mass assignable.
