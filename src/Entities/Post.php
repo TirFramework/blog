@@ -47,14 +47,24 @@ class Post extends BaseModel
         return [
             Select::make('locale')->data([
                 [
-                    'label' => 'Fa',
-                    'value' => 'Fa'
+                    'label' => 'fa',
+                    'value' => 'fa'
                 ],
                 [
-                    'label' => 'En',
-                    'value' => 'En'
+                    'label' => 'en',
+                    'value' => 'en'
                 ]
-            ])->default('Fa')->rules('required')->filter(),
+            ])->default('fa')->rules('required')->onlyOnEditing()->readonly()->filter(),
+            Select::make('locale')->data([
+                [
+                    'label' => 'fa',
+                    'value' => 'fa'
+                ],
+                [
+                    'label' => 'en',
+                    'value' => 'en'
+                ]
+            ])->default('fa')->rules('required')->hideWhenEditing(),
             Text::make('title')->rules('required')->display(trans('post::panel.title')),
             Text::make('slug')->rules('required')->rules('required', 'unique:posts,slug,' . $this->id)->hideFromIndex(),
             Select::make('categories')->relation('categories', 'title')->multiple()->rules('required'),
