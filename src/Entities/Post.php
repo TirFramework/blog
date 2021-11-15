@@ -65,7 +65,7 @@ class Post extends BaseModel
                     'value' => 'en'
                 ]
             ])->default('fa')->rules('required')->hideWhenEditing(),
-            Text::make('title')->rules('required')->display(trans('post::panel.title')),
+            Text::make('title')->rules('required')->display(trans('post::panel.title'))->searchable(),
             Text::make('slug')->rules('required')->rules('required', 'unique:posts,slug,' . $this->id)->hideFromIndex(),
             Select::make('categories')->relation('categories', 'title')->multiple()->rules('required'),
             FileUploader::make('intro_image')->maxCount(10)->hideFromIndex(),
