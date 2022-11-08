@@ -1,5 +1,4 @@
 <?php
-
 return [
     'content' =>'content' ,
     'blog' =>'blog' ,

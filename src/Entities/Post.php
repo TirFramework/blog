@@ -2,51 +2,99 @@
 
 namespace Tir\Blog\Entities;
 
-use Tir\Metadata\Eloquent\HasMetaData;
-use Tir\User\Entities\User;
-use Tir\Comment\Entities\Comment;
-use Tir\Crud\Support\Eloquent\CrudModel;
-use Tir\Store\Category\Entities\Category;
 use Cviebrock\EloquentSluggable\Sluggable;
-use Tir\Crud\Support\Eloquent\Translatable;
+use Tir\Crud\Support\Eloquent\BaseModel;
+use Tir\Crud\Support\Eloquent\IsTranslatable;
+use Tir\Crud\Support\Scaffold\Fields\Select;
+use Tir\Crud\Support\Scaffold\Fields\Text;
+use Tir\Crud\Support\Scaffold\Fields\Editor;
+use Tir\Crud\Support\Scaffold\Fields\TextArea;
+use Tir\FileManager\Scaffold\Fields\FileUploader;
+use Tir\User\Entities\User;
 
-class Post extends CrudModel
+class Post extends BaseModel
 {
 
-    use Translatable, Sluggable, HasMetaData;
-
-    /**
-     * The attribute show route name
-     * and we use in fieldTypes and controllers
-     *
-     * @var string
-     */
-    public static $routeName = 'post';
+    use Sluggable;
+    use IsTranslatable;
 
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = ['slug', 'status','user_id', 'author_id'];
+    protected $fillable = [
+        'user_id', 'author_id',
+        'title', 'slug', 'description', 'summary',
+        'meta_title', 'meta_description', 'meta_keywords',
+        'locale',
+        'intro_image', 'main_image',
+        'status'];
 
-    /**
-     * The attributes that are translatable.
-     *
-     * @var array
-     */
-    public $translatedAttributes = ['title', 'content','summary','images'];
+    protected $casts = [
+        'intro_image' => 'array',
+        'main_image' => 'array',
+    ];
+    
+
+    protected function setModuleName(): string
+    {
+        return 'post';
+    }
+
+    protected function setFields(): array
+    {
+        return [
+            Select::make('locale')->data([
+                [
+                    'label' => 'fa',
+                    'value' => 'fa'
+                ],
+                [
+                    'label' => 'en',
+                    'value' => 'en'
+                ]
+            ])->default('fa')->rules('required')->onlyOnEditing()->readonly()->filter(),
+            Select::make('locale')->data([
+                [
+                    'label' => 'fa',
+                    'value' => 'fa'
+                ],
+                [
+                    'label' => 'en',
+                    'value' => 'en'
+                ]
+            ])->default('fa')->rules('required')->hideWhenEditing(),
+            Text::make('title')->rules('required')->display(trans('post::panel.title'))->searchable(),
+            Text::make('slug')->rules('required')->rules('required', 'unique:posts,slug,' . $this->id)->hideFromIndex(),
+            Select::make('categories')->relation('categories', 'title')->multiple()->rules('required'),
+            FileUploader::make('intro_image')->maxCount(10)->hideFromIndex(),
+            FileUploader::make('main_image')->hideFromIndex(),
+            Select::make('author_id')->relation('author', 'name')->rules('required'),
+            Editor::make('description')->height(800)->rules('required')->hideFromIndex()->hideFromIndex(),
+            TextArea::make('summary')->rules('required')->hideFromIndex(),
+            Text::make('meta_title')->hideFromIndex(),
+            TextArea::make('meta_description')->hideFromIndex(),
+            Text::make('meta_keywords')->hideFromIndex(),
+            Select::make('status')->data([
+                [
+                    'label' => 'Draft',
+                    'value' => 'Draft'
+                ],
+                [
+                    'label' => 'Published',
+                    'value' => 'Published'
+                ],
+                [
+                    'label' => 'UnPublished',
+                    'value' => 'UnPublished'
+                ]
+            ])->default('Draft')->rules('required')->comment('Post view status')->filter(),
+        ];
+    }
 
 
-    /**
-     * The relations to eager load on every query.
-     *
-     * @var array
-     */
-    protected $with = ['translations'];
-
-
-    public function sluggable()
+    public function sluggable(): array
     {
         return [
             'slug' => [
@@ -55,184 +103,21 @@ class Post extends CrudModel
         ];
     }
 
-    /**
-     * This function return array for validation
-     *
-     * @return array
-     */
-    public function getValidation()
-    {
-        return [
-            'title'   => 'required',
-            'slug'    => 'required',
-            'status'  => 'required',
-        ];
-    }
-
-
-    /**
-     * This function return an object of field
-     * and we use this for generate admin panel page
-     * @return array
-     */
-    public function getFields()
-    {
-        return [
-            [
-                'name'    => 'basic_information',
-                'type'    => 'group',
-                'visible' => 'ce',
-                'tabs'    => [
-                    [
-                        'name'    => 'post_information',
-                        'type'    => 'tab',
-                        'visible' => 'ce',
-                        'fields'  => [
-                            [
-                                'name'    => 'id',
-                                'type'    => 'text',
-                                'visible' => 'io',
-                            ],
-                            [
-                                'name'    => 'title',
-                                'type'    => 'text',
-                                'validation' => 'required',
-                                'visible' => 'ice',
-                            ],
-                            [
-                                'name'    => 'author_id',
-                                'type'    => 'relation',
-                                'relation' => ['author', 'name'],
-                                'visible' => 'ice',
-                            ],
-                            [
-                                'name'    => 'slug',
-                                'type'    => 'text',
-                                'validation' => 'required',
-                                'visible' => 'ce',
-                            ],
-                            [
-                                'name' => 'categories',
-                                'type' => 'relationM',
-                                'relation' => ['categories', 'name'],
-                                'visible' => 'ice'
-                            ],
-                            [
-                                'name'    => 'summary',
-                                'type'    => 'textarea',
-                                'visible' => 'ce',
-                            ],
-                            [
-                                'name'    => 'content',
-                                'type'    => 'textEditor',
-                                'visible' => 'ce',
-                            ],
-                            [
-                                'name'    => 'created_at',
-                                'type'    => 'text',
-                                'visible' => 'i',
-                            ],
-                            [
-                                'name'    => 'status',
-                                'type'    => 'select',
-                                'validation' => 'required',
-                                'data'    => ['draft'       => trans('post::panel.draft'),
-                                              'published'   => trans('post::panel.published'),
-                                              'unpublished' => trans('post::panel.unpublished')
-                                ],
-                                'visible' => 'icef',
-                            ],
-
-
-                        ]
-                    ],
-                    [
-                        'name'    => 'images',
-                        'type'    => 'tab',
-                        'visible' => 'ce',
-                        'fields'  => [
-                            [
-                                'name'    => 'images[intro]',
-                                'display' => 'intro_image',
-                                'type'    => 'image',
-                                'visible' => 'ce',
-                            ],
-                            [
-                                'name'    => 'images[main]',
-                                'display' => 'main_image',
-                                'type'    => 'image',
-                                'visible' => 'ce',
-                            ]
-
-                        ]
-                    ],
-                    [
-                        'name'    => 'meta',
-                        'type'    => 'tab',
-                        'visible' => 'ce',
-                        'fields'  => [
-                            [
-                                'name'    => 'meta[meta_title]',
-                                'display' => 'meta_title',
-                                'type'    => 'text',
-                                'visible' => 'ce',
-                            ],
-                            [
-                                'name'    => 'meta[meta_keywords]',
-                                'display' => 'meta_keywords',
-                                'type'    => 'metaKeywords',
-                                'multiple' => true,
-                                'visible' => 'ce',
-                            ],
-                            [
-                                'name'    => 'meta[meta_description]',
-                                'display' => 'meta_description',
-                                'type'    => 'textarea',
-                                'visible' => 'ce',
-                            ],
-                            [
-                                'name'    => 'meta[meta_custom]',
-                                'display' => 'meta_custom',
-                                'type'    => 'textarea',
-                                'visible' => 'ce',
-                            ],
-                        ]
-                    ]
-                ]
-            ]
-        ];
-    }
-
-    //
-
-    public function getPublishedAtAttribute($value)
-    {
-        if( config('app.locale') =='fa' ){
-            return jdate($value)->format('%H:%M %A %d %B %Y');
-        }
-        if( config('app.locale') =='en' ){
-             return date('M D , Y', strtotime( $value ));
-
-        }
-    }
-
-    //Additional methods //////////////////////////////////////////////////////////////////////////////////////////////
-
-
-    //Relations methods ///////////////////////////////////////////////////////////////////////////////////////////////
-
     public function categories()
     {
         return $this->belongsToMany(PostCategory::class);
     }
 
-    public function author(){
+    public function author()
+    {
         return $this->belongsTo(User::class, 'author_id');
     }
 
-    public function comments()
+    
+    public function scopeSearch($query, $keywords)
     {
-        return $this->morphMany(Comment::class, 'commentable');
+        $query->where('title', 'LIKE', '%' . $keywords . '%');
+        return $query;
     }
 
 }
