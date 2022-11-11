@@ -198,7 +198,7 @@ class BlogTest extends TestCase
             [
                 'title'            => 'Test Post 1',
                 'slug'             => 'test post 1',
-                'categories' => PostCategory::first()->id,
+                'categories'       => PostCategory::first()->id,
                 'author_id'        => '1',
                 'description'      => 'this is test description',
                 'summary'          => 'this is test summary',
