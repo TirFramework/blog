@@ -32,8 +32,7 @@ class BlogTest extends TestCase
     protected function beforeEach(): void
     {
 //        Artisan::call()
-        $this->user = Auth::loginUsingId(1);
-
+        $this->user = Auth::loginUsingId(10);
         $this->postCategory = new PostCategory();
         $this->postCategory->scaffold();
 
@@ -90,8 +89,10 @@ class BlogTest extends TestCase
                 'title'     => 'Test Post 1',
                 'slug'      => 'test post 1',
                 'user_id' => $this->user->id,
+                'description' => 'test description',
                 'parent_id' => '2',
-                'status'    => '0'
+                'status'    => '0',
+                'locale'    => 'en'
             ]
         );
         $response->assertStatus(200)
@@ -122,14 +123,14 @@ class BlogTest extends TestCase
     public function test_post_category_update_request()
     {
         $this->beforeEach();
-        $postCategory = PostCategory::where('slug','test post 1')->first();
-
-        $response = $this->put('/api/v1/admin/postCategory/'.$postCategory->id,
+        $postCategory = PostCategory::where('slug','test post 1')->withoutGlobalScope('locale')->first();
+        $response = $this->put('/api/v1/admin/postCategory/'.$postCategory->id.'?locale=all',
             [
                 'title'     => 'Test Post 1 edited',
                 'slug'      => 'test post 1',
                 'parent_id' => '2',
-                'status'    => '0'
+                'status'    => 'Published',
+                'locale'    => 'en'
             ]
         );
 
@@ -197,11 +198,12 @@ class BlogTest extends TestCase
             [
                 'title'            => 'Test Post 1',
                 'slug'             => 'test post 1',
-                'categories' => PostCategory::first()->id,
+                'categories'       => PostCategory::first()->id,
                 'author_id'        => '1',
                 'description'      => 'this is test description',
                 'summary'          => 'this is test summary',
-                'status'           => '0'
+                'status'           => 'Published',
+                'locale'           => 'en'
 
 
             ]
@@ -237,7 +239,7 @@ class BlogTest extends TestCase
     public function test_post_update_request()
     {
         $this->beforeEach();
-        $postCategory = Post::where('slug','test post 1')->first();
+        $postCategory = Post::where('slug','test post 1')->withoutGlobalScope('locale')->first();
 
         $response = $this->put('/api/v1/admin/post/'.$postCategory->id,
             [
@@ -247,7 +249,8 @@ class BlogTest extends TestCase
                 'author_id'        => '1',
                 'description'      => 'this is test description',
                 'summary'          => 'this is test summary',
-                'status'           => '0'
+                'status'           => '0',
+                'locale'           => 'en'
             ]
         );
 

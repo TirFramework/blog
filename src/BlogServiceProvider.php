@@ -38,7 +38,7 @@ class BlogServiceProvider extends ServiceProvider
         $this->app->register(SeedServiceProvider::class);
 
         //Add menu to admin panel
-        $this->adminMenu();
+//        $this->adminMenu();
 
         $this->registerModule();
 

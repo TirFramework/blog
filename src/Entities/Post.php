@@ -35,7 +35,7 @@ class Post extends BaseModel
         'intro_image' => 'array',
         'main_image' => 'array',
     ];
-    
+
 
     protected function setModuleName(): string
     {
@@ -113,7 +113,7 @@ class Post extends BaseModel
         return $this->belongsTo(User::class, 'author_id');
     }
 
-    
+
     public function scopeSearch($query, $keywords)
     {
         $query->where('title', 'LIKE', '%' . $keywords . '%');
