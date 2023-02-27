@@ -37,6 +37,16 @@ class Post extends BaseModel
     ];
 
 
+    public static function booted()
+    {
+        parent::boot();
+
+        static::creating(function (self $model) {
+
+            $model->user_id = auth()->id();
+        });
+    }
+
     protected function setModuleName(): string
     {
         return 'post';

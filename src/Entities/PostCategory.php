@@ -25,6 +25,16 @@ class PostCategory extends BaseModel
     public $timestamps = false;
 
 
+    public static function booted()
+    {
+        parent::boot();
+
+        static::creating(function (self $model) {
+
+            $model->user_id = auth()->id();
+        });
+    }
+
     protected function setModuleName(): string
     {
         return 'postCategory';
