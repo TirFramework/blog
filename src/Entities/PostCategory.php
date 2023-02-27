@@ -33,23 +33,34 @@ class PostCategory extends BaseModel
     protected function setFields(): array
     {
         return [
-            Select::make('locale')->data([
+            Select::make('locale')->data(
                 [
-                    'label' => 'Fa',
-                    'value' => 'Fa'
+                    'label' => 'fa',
+                    'value' => 'fa'
                 ],
                 [
-                    'label' => 'En',
-                    'value' => 'En'
+                    'label' => 'en',
+                    'value' => 'en'
                 ]
-            ])->default('Fa')->rules('required')->filter(),
+            )->default('fa')->rules('required')->onlyOnEditing()->readonly()->filter(),
+            Select::make('locale')->data(
+                [
+                    'label' => 'fa',
+                    'value' => 'fa'
+                ],
+                [
+                    'label' => 'en',
+                    'value' => 'en'
+                ]
+            )->default('fa')->rules('required')->hideWhenEditing(),
+
             Select::make('parent_id')->relation('parent','title')->display('parent')->hideFromIndex(),
             Text::make('title')->rules('required'),
-            Text::make('slug')->rules('required','unique:post_categories,slug,'.$this->id)->hideFromIndex(),
+            Text::make('slug')->rules('required','unique:post_categories,slug,'.request()->route('postCategory'))->hideFromIndex(),
             // TextArea::make('description')->hideFromIndex(),
             // Text::make('image')->hideFromIndex(),
             Number::make('position'),
-            Select::make('status')->data([
+            Select::make('status')->data(
                 [
                     'label' => 'Draft',
                     'value' => 'Draft'
@@ -62,7 +73,7 @@ class PostCategory extends BaseModel
                     'label' => 'Published',
                     'value' => 'Published'
                 ],
-            ])->default('Draft'),
+            )->default('Draft'),
         ];
     }
 

@@ -45,7 +45,7 @@ class Post extends BaseModel
     protected function setFields(): array
     {
         return [
-            Select::make('locale')->data([
+            Select::make('locale')->data(
                 [
                     'label' => 'fa',
                     'value' => 'fa'
@@ -54,8 +54,8 @@ class Post extends BaseModel
                     'label' => 'en',
                     'value' => 'en'
                 ]
-            ])->default('fa')->rules('required')->onlyOnEditing()->readonly()->filter(),
-            Select::make('locale')->data([
+            )->default('fa')->rules('required')->onlyOnEditing()->readonly()->filter(),
+            Select::make('locale')->data(
                 [
                     'label' => 'fa',
                     'value' => 'fa'
@@ -64,19 +64,19 @@ class Post extends BaseModel
                     'label' => 'en',
                     'value' => 'en'
                 ]
-            ])->default('fa')->rules('required')->hideWhenEditing(),
+            )->default('fa')->rules('required')->hideWhenEditing(),
             Text::make('title')->rules('required')->display(trans('post::panel.title'))->searchable(),
-            Text::make('slug')->rules('required')->rules('required', 'unique:posts,slug,' . $this->id)->hideFromIndex(),
-            Select::make('categories')->relation('categories', 'title')->multiple()->rules('required'),
+            Text::make('slug')->rules('required')->rules('required', 'unique:posts,slug,' . request()->route('post'))->hideFromIndex(),
+            Select::make('categories')->relation('categories', 'title')->multiple()->rules('required')->filter(),
             FileUploader::make('intro_image')->maxCount(10)->hideFromIndex(),
             FileUploader::make('main_image')->hideFromIndex(),
-            Select::make('author_id')->relation('author', 'name')->rules('required'),
+            Select::make('author_id')->relation('author', 'name')->rules('required')->filter(),
             Editor::make('description')->height(800)->rules('required')->hideFromIndex()->hideFromIndex(),
             TextArea::make('summary')->rules('required')->hideFromIndex(),
             Text::make('meta_title')->hideFromIndex(),
             TextArea::make('meta_description')->hideFromIndex(),
             Text::make('meta_keywords')->hideFromIndex(),
-            Select::make('status')->data([
+            Select::make('status')->data(
                 [
                     'label' => 'Draft',
                     'value' => 'Draft'
@@ -89,7 +89,7 @@ class Post extends BaseModel
                     'label' => 'UnPublished',
                     'value' => 'UnPublished'
                 ]
-            ])->default('Draft')->rules('required')->comment('Post view status')->filter(),
+            )->default('Draft')->rules('required')->comment('Post view status')->filter(),
         ];
     }
 
